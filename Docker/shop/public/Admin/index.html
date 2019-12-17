@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- META DATA -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- TITLE OF SITE -->
+    <title>Home</title>
+
+    <!-- favicon -->
+    <!--<link rel="shortcat icon" href="/favicon.ico" type="image/x-icon">-->
+
+    <!--font-awesome.min.css-->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+    <!--linear icon css-->
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
+    <!--chartist.min.css-->
+    <link rel="stylesheet" href="assets/chartist/css/chartist.min.css">
+
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!--style.css-->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!--responsive.css-->
+    <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="assets/css/element.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/axios.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <![endif]-->
+    <style>
+        a:hover{
+            text-decoration: none !important;
+        }
+        ul{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            list-style: none;
+        }
+        select{
+            padding-left: 15px !important;
+        }
+        .fl{
+            float: left;
+        }
+        .fr{
+            float: right;
+        }
+        .ma{
+            margin: 0 auto;
+        }
+        .shows{
+            margin-top: 20px;
+        }
+        .add ,.edit ,.detail{
+            padding: 20px;
+            text-align: center;
+        }
+        .add .container, .edit .container, .detail .container{
+            background: #fff;
+        }
+        .addAttr{
+            display: inline-block;
+            padding: 0 10px;
+            cursor: pointer;
+            line-height: 40px;
+            background: #f6f6f6;
+            border-radius: 10px;
+            margin-left: 20px;
+        }
+        .attrs{
+            float: left;
+            height: 40px;
+            padding-top: 5px;
+        }
+        .attr{
+            float: left;
+            line-height: 20px;
+            padding: 5px 20px;
+            border-radius: 20px;
+            background: #fff;
+            margin-left: 10px;
+        }
+        .forms{
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- APP -->
+<div id="app">
+
+    <!-- wrapper -->
+    <div id="wrapper">
+
+        <!-- navbar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="brand">
+                <a href="index.html">
+                    Product<span>Admin</span>
+                </a>
+            </div><!--/.brand -->
+            <div class="container-fluid">
+                <div class="navbar-btn">
+                    <button type="button" class="btn-toggle-fullwidth">
+                        <i class="lnr lnr-arrow-left-circle"></i>
+                    </button>
+                </div><!--/.navbar-btn -->
+                <form class="navbar-form navbar-left">
+                    <div class="search-group">
+                        <button type="button"><i data-feather="search"></i></button>
+                        <input type="text" value="" placeholder="Search..">
+                    </div><!--/.search-group -->
+                </form><!--/form -->
+                <div class="navbar-menu">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="assets/images/parson.png" class="img-circle" alt="parson-img">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!--/.container-fluid -->
+
+        </nav><!--/nav -->
+        <!-- END NAVBAR -->
+
+        <!-- LEFT SIDEBAR -->
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="index.html" >
+                                <i data-feather="home"></i> <span>Categorys</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="product.html">
+                                <i data-feather="package"></i> <span>Products</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+        <!-- END LEFT SIDEBAR -->
+
+        <!-- MAIN -->
+        <div class="main">
+
+            <div class="container">
+                <div class="main-content-head">
+                    <h2>分类管理</h2>
+                    <p>Welcome to my Admin</p>
+                </div>
+            </div>
+
+            <div v-if="operation === 'show'" class="shows">
+                <div class="container">
+                    <div class="box">
+                        <div class="box-head">
+                            <h2>所有分类信息</h2>
+                            <p @click="operation='add'">新增分类</p>
+                        </div>
+                        <div class="item">
+                            <div class="item-responsive ">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>分类名称</th>
+                                        <th>分类属性</th>
+                                        <th>分类状态</th>
+                                        <th>相关操作</th>
+                                    </tr>
+                                    </thead><!--/thead-->
+                                    <tbody>
+                                    <tr v-for="(category,index) in categorys">
+                                        <td>
+                                            <a class="el-link el-link--success is-underline" @click="cateDetail(category.id),operation = 'detail'">
+                                                <span class="el-link--inner">
+                                                    {{(page-1)*10+index+1}}
+                                                    <i class="el-icon-view el-icon--right"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>{{category.name}}</td>
+                                        <td>
+                                            <span v-if="category.property == null">无</span>
+                                            <span v-else v-for=" att in category.property">{{att}} </span>
+                                        </td>
+                                        <td>
+                                            <span v-if="category.status == 1" class="item-status delivered">显示</span>
+                                            <span v-if="category.status == 2" class="item-status cancel">隐藏</span>
+                                        </td>
+                                        <td>
+                                            <span class="item-status delivered" @click="cateDetail(category.id),operation = 'edit'">UPDATE</span>
+                                            <span class="item-status cancel" @click="confirmAlert('您确定要删除吗?,这将影响到该分类下的所有商品.',category.id)">DELETE</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div v-if="catePages.pageCount !== 1" class="demo-block demo-zh-CN demo-pagination">
+                            <div class="source">
+                                <div>
+                                    <div class="block">
+                                        <div class="el-pagination">
+                                            <span class="el-pagination__total">共 {{catePages.itemCount}}条</span>
+                                            <button v-if="catePages.currentPage === 1" disabled="disabled" type="button" class="btn-prev">
+                                                <i class="el-icon el-icon-arrow-left"></i>
+                                            </button>
+                                            <button v-else @click="switchPage(catePages.prevPage)" type="button" class="btn-next">
+                                                <i class="el-icon el-icon-arrow-left"></i>
+                                            </button>
+                                            <ul class="el-pager">
+                                                <li v-for="p in pages" v-if="p === catePages.currentPage" class="number active">
+                                                    {{p}}
+                                                </li>
+                                                <li v-else class="number" @click="switchPage(p)">
+                                                    {{p}}
+                                                </li>
+                                            </ul>
+                                            <button v-if="catePages.currentPage === catePages.pageCount" disabled="disabled" type="button" class="btn-prev">
+                                                <i class="el-icon el-icon-arrow-right"></i>
+                                            </button>
+                                            <button v-else @click="switchPage(catePages.nextPage)" type="button" class="btn-next">
+                                                <i class="el-icon el-icon-arrow-right"></i>
+                                            </button>
+                                            <span class="el-pagination__jump">
+                                                前往
+                                                <div class="el-input el-pagination__editor is-in-pagination">
+                                                    <input @keydown="changePage($event)" v-model="page" type="number" autocomplete="off" min="1" max="4" class="el-input__inner">
+                                                </div>
+                                                页
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="operation === 'add'" class="add">
+                <div class="container">
+                    <div class="demo-block">
+                        <div class="source">
+                            <div class="el-page-header">
+                                <div @click="back" class="el-page-header__left">
+                                    <i class="el-icon-back"></i>
+                                    <div class="el-page-header__title">首页</div>
+                                </div>
+                                <div class="el-page-header__content ma">新增分类</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="forms">
+                        <form class="el-form">
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类名称</label>
+                                <input v-model="name" type="text" autocomplete="off" style="width: 300px;" class="el-input__inner">
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类属性</label>
+                                <input v-model="attr" type="text" autocomplete="off" style="width: 150px; float: left" class="el-input__inner">
+                                <p class="addAttr" @click="addAttr">添加属性</p>
+                            </div>
+                            <div v-if="attrList" class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">已有属性</label>
+                                <ul class="attrs">
+                                    <li v-if="attr1" class="attr">
+                                        {{attr1}}
+                                        <span @click="removeAttr('attr1')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    </li>
+                                    <li v-if="attr2" class="attr">
+                                        {{attr2}}
+                                        <span @click="removeAttr('attr2')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    </li>
+                                    <li v-if="attr3" class="attr">
+                                        {{attr3}}
+                                        <span @click="removeAttr('attr3')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类排序</label>
+                                <select v-model="sort" name="sort" id="sort" style="width: 300px; height: 40px">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类状态</label>
+                                <select v-model="status" name="status" id="status" style="width: 300px; height: 40px">
+                                    <option value="1">显示</option>
+                                    <option value="2">隐藏</option>
+                                    <option value="3">删除</option>
+                                </select>
+                            </div>
+                            <div class="el-form-item">
+                                <div class="el-form-item__content" style="margin-left: 80px;">
+                                    <button type="button" class="el-button el-button--primary" @click="addCate"><span>立即创建</span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="operation === 'edit'" class="edit">
+                <div class="container">
+                    <div class="demo-block">
+                        <div class="source">
+                            <div class="el-page-header">
+                                <div @click="back" class="el-page-header__left">
+                                    <i class="el-icon-back"></i>
+                                    <div class="el-page-header__title">首页</div>
+                                </div>
+                                <div class="el-page-header__content ma">更新分类</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="forms">
+                        <form class="el-form">
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类名称</label>
+                                <input v-model="cateMsg.name" type="text" autocomplete="off" style="width: 300px;" class="el-input__inner">
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类属性</label>
+                                <input v-model="attr" type="text" autocomplete="off" style="width: 150px; float: left" class="el-input__inner">
+                                <p class="addAttr" @click="addAttr">添加属性</p>
+                            </div>
+                            <div v-if="attrList" class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">已有属性</label>
+                                <ul class="attrs">
+                                    <li v-if="attr1" class="attr">
+                                        {{attr1}}
+                                        <span @click="removeAttr('attr1')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    </li>
+                                    <li v-if="attr2" class="attr">
+                                        {{attr2}}
+                                        <span @click="removeAttr('attr2')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    </li>
+                                    <li v-if="attr3" class="attr">
+                                        {{attr3}}
+                                        <span @click="removeAttr('attr3')">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类排序</label>
+                                <select v-model="cateMsg.sort" name="sort" id="edit_sort" style="width: 300px; height: 40px">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 80px;">分类状态</label>
+                                <select v-model="cateMsg.status" name="status" id="edit_status" style="width: 300px; height: 40px">
+                                    <option value="1">显示</option>
+                                    <option value="2">隐藏</option>
+                                    <option value="3">删除</option>
+                                </select>
+                            </div>
+                            <div class="el-form-item">
+                                <div class="el-form-item__content" style="margin-left: 80px;">
+                                    <button type="button" class="el-button el-button--primary" @click="editCate"><span>更新</span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="operation === 'detail'" class="detail">
+                <div class="container">
+                    <div class="demo-block">
+                        <div class="source">
+                            <div class="el-page-header">
+                                <div @click="back" class="el-page-header__left">
+                                    <i class="el-icon-back"></i>
+                                    <div class="el-page-header__title">首页</div>
+                                </div>
+                                <div class="el-page-header__content ma">分类详情</div>
+                                <div class="el-page-header__content">
+                                    <button @click="cateDetail(cateMsg.id),operation = 'edit'" type="button" class="el-button el-button--primary is-circle" style="padding: 3px;">
+                                        <i class="el-icon-edit"></i>
+                                    </button>
+                                    <button @click="confirmAlert('您确定要删除吗?,这将影响到该分类下的所有商品.',cateMsg.id)" type="button" class="el-button el-button--danger is-circle" style="padding: 3px;">
+                                        <i class="el-icon-delete"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="forms">
+                        <form class="el-form">
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 100px;text-align:left;">分类名称</label>
+                                <label class="el-form-item__label" style="width: 80px;">{{cateMsg.name}}</label>
+                            </div>
+                            <div v-if="attrList" class="el-form-item">
+                                <label class="el-form-item__label" style="width: 100px;text-align:left;">已有属性</label>
+                                <label class="el-form-item__label">
+                                    <span v-if="attr1" class="el-tag el-tag--info el-tag--light">{{attr1}}</span>
+                                    <span v-if="attr2" class="el-tag el-tag--info el-tag--light">{{attr2}}</span>
+                                    <span v-if="attr3" class="el-tag el-tag--info el-tag--light">{{attr3}}</span>
+                                </label>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 100px;text-align:left;">分类排序</label>
+                                <label class="el-form-item__label" style="width: 80px;">{{cateMsg.sort}}</label>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 100px;text-align:left;">分类状态</label>
+                                <label class="el-form-item__label" style="width: 80px;">{{cateMsg.status}}</label>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 100px;text-align:left;">创建时间</label>
+                                <label class="el-form-item__label">{{cateMsg.created_at}}</label>
+                            </div>
+                            <div class="el-form-item">
+                                <label class="el-form-item__label" style="width: 100px;text-align:left;">上次修改</label>
+                                <label class="el-form-item__label">{{cateMsg.updated_at}}</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- END MAIN -->
+
+    </div>
+    <!-- END WRAPPER -->
+    <!--  提示弹框  -->
+    <div v-if="msgAlert" tabindex="-1" role="dialog" aria-modal="true" aria-label="标题名称" class="el-message-box__wrapper" style="z-index: 2018;">
+            <div class="el-message-box">
+                <div class="el-message-box__header">
+                    <div class="el-message-box__title">
+                        <span>提示</span>
+                    </div>
+                    <button @click="msgAlert=false" type="button" aria-label="Close" class="el-message-box__headerbtn">
+                        <i class="el-message-box__close el-icon-close"></i>
+                    </button>
+                </div>
+                <div class="el-message-box__content">
+                    <div class="el-message-box__message">
+                        <p>{{notice}}</p>
+                    </div>
+                    <div class="el-message-box__input" style="display: none;">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" placeholder="" class="el-input__inner">
+                        </div>
+                        <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                    </div>
+                </div>
+                <div class="el-message-box__btns">
+                    <button type="button" class="el-button el-button--default el-button--small el-button--primary " @click="msgAlert=false">
+                        <span>确定</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    <div v-if="msgAlert" class="v-modal" tabindex="0" style="z-index: 2000;"></div>
+    <!--  确认弹框-->
+    <div v-if="enterAlert" tabindex="-1" role="dialog" aria-modal="true" aria-label="提示" class="el-message-box__wrapper" style="z-index: 2004;">
+            <div class="el-message-box">
+                <div class="el-message-box__header">
+                    <div class="el-message-box__title">
+                        <span>提示</span>
+                    </div>
+                    <button @click="enterAlert = false" type="button" aria-label="Close" class="el-message-box__headerbtn">
+                        <i class="el-message-box__close el-icon-close"></i>
+                    </button>
+                </div>
+                <div class="el-message-box__content">
+                    <div class="el-message-box__status el-icon-warning"></div>
+                    <div class="el-message-box__message">
+                        <p>{{notice}}</p>
+                    </div>
+                    <div class="el-message-box__input" style="display: none;">
+                        <div class="el-input">
+                            <input type="text" autocomplete="off" placeholder="" class="el-input__inner">
+                        </div>
+                        <div class="el-message-box__errormsg" style="visibility: hidden;"></div>
+                    </div>
+                </div>
+                <div class="el-message-box__btns">
+                    <button @click="enterAlert = false" type="button" class="el-button el-button--default el-button--small">
+                        <span>取消</span>
+                    </button>
+                    <button @click="delCate(cate_id)" type="button" class="el-button el-button--default el-button--small el-button--primary ">
+                        <span>确定</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    <div v-if="enterAlert" class="v-modal" tabindex="0" style="z-index: 2003;"></div>
+
+</div>
+<!-- END APP -->
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            operation:'show',
+            categorys:[],
+            cateAttrs:[],
+            attrList:false,
+            disabled:true,
+            name:'',
+            attr:'',
+            attr1:'',
+            attr2:'',
+            attr3:'',
+            sort:10,
+            status:1,
+            cateMsg:{},
+            msgAlert:false,   // 弹框
+            notice:'',  // 提示信息
+            enterAlert:false,  // 确认弹框
+            cate_id:'',
+            pages:[], // 页
+            page:1, // 当前页
+            catePages:{}, // 分页信息
+        },
+        mounted(){
+            this.getCateMes();
+        },
+        methods: {
+            getCateMes(){
+                axios({
+                    method:'get',
+                    url:'http://www.blog.com/api/category',
+                    params:{
+                        page:this.page,
+                    },
+                    responseType:'json'
+                }).then(res => {
+                    if (res.data.code === 0) {
+                        // console.log(res.data);
+                        this.categorys = res.data.data;
+                        this.catePages = res.data.page;
+                        let pageCount = this.catePages.pageCount;
+                        this.pages = [];
+                        for (let i = 1; i <= pageCount ; i++){
+                            this.pages.push(i);
+                        }
+                    } else {
+
+                    }
+                });
+            },
+            addAttr(){
+                if (this.attr.length <= 0) {
+                    return;
+                }
+                if (!this.attr1) {
+                    this.attr1 = this.attr;
+                    this.attrList = true;
+                    this.attr = '';
+                    return false;
+                } else if(!this.attr2) {
+                    if (this.attr1 === this.attr){
+                        this.notice = '已有该属性';
+                        this.msgAlert = true;
+                        return;
+                    }
+                    this.attr2 = this.attr;
+                    this.attrList = true;
+                    this.attr = '';
+                    return false;
+                } else if(!this.attr3) {
+                    if (this.attr1 === this.attr || this.attr2 === this.attr){
+                        this.notice = '已有该属性';
+                        this.msgAlert = true;
+                        return;
+                    }
+                    this.attr3 = this.attr;
+                    this.attrList = true;
+                    this.attr = '';
+                    return false;
+                } else if (this.attr1 && this.attr2 && this.attr3){
+                    this.notice = '属性已达上限';
+                    this.msgAlert = true;
+                    return false;
+                }
+            },
+            removeAttr(attr){
+                if (confirm('你确定要删除该属性么,这可能会影响到商品')){
+                    if (attr === 'attr1') {
+                        this.attr1 = '';
+                        if (this.attr2) {
+                            this.attr1 = this.attr2;
+                            if (this.attr3) {
+                                this.attr2 = this.attr3;
+                                this.attr3 = '';
+                            } else {
+                                this.attr2 = '';
+                            }
+                        } else {
+                            this.attrList = false;
+                        }
+                    }
+                    if (attr === 'attr2') {
+                        this.attr2 = '';
+                        if (this.attr3) {
+                            this.attr2 = this.attr3;
+                            this.attr3 = '';
+                        }
+                    }
+                    if (attr === 'attr3') {
+                        this.attr3 = '';
+                    }
+                }
+            },
+            addCate(){
+                axios({
+                    method:'post',
+                    url:'http://www.blog.com/api/category/create',
+                    params:{
+                        name:this.name,
+                        attr1:this.attr1,
+                        attr2:this.attr2,
+                        attr3:this.attr3,
+                        sort:this.sort,
+                        status:this.status,
+                    },
+                    responseType:'json',
+                }).then(res => {
+                    // console.log(res.data);
+                    this.notice = res.data.msg;
+                    this.msgAlert = true;
+                    if (res.data.code === 0) {
+                        this.getCateMes();
+                        this.name = '';
+                        this.attr = '';
+                        this.attr1 = '';
+                        this.attr2 = '';
+                        this.attr3 = '';
+                        this.sort = 10;
+                        this.status = 1;
+                        this.attrList = false;
+                    } else {
+
+                    }
+                });
+            },
+            cateDetail(id){
+                axios({
+                    method:'get',
+                    url:'http://www.blog.com/api/category/detail',
+                    params:{
+                        id:id,
+                    },
+                    responseType:'json'
+                }).then(res => {
+                    // console.log(res.data.data);
+                    if (res.data.code === 0) {
+                        this.cateMsg = res.data.data;
+                        if (this.cateMsg.property.attr1){
+                            this.attrList = true;
+                            this.attr1 = this.cateMsg.property.attr1;
+                            this.attr2 = this.cateMsg.property.attr2 ? this.cateMsg.property.attr2 : '';
+                            this.attr3 = this.cateMsg.property.attr3 ? this.cateMsg.property.attr3 : '';
+                        }
+                    } else {
+
+                    }
+                });
+            },
+            editCate(){
+                // console.log(this.cateMsg);
+                axios({
+                    method:'put',
+                    url:'http://www.blog.com/api/category/update',
+                    params:{
+                        id:this.cateMsg.id,
+                        name:this.cateMsg.name,
+                        attr1:this.attr1,
+                        attr2:this.attr2,
+                        attr3:this.attr3,
+                        sort:this.cateMsg.sort,
+                        status:this.cateMsg.status,
+                    },
+                    responseType:'json',
+                }).then(res => {
+                    // console.log(res.data);
+                    this.notice = res.data.msg;
+                    this.msgAlert = true;
+                    if (res.data.code === 0) {
+                        this.getCateMes();
+                        this.cateDetail(this.cateMsg.id);
+                        this.name = '';
+                        this.attr = '';
+                        this.attr1 = '';
+                        this.attr2 = '';
+                        this.attr3 = '';
+                        this.attrList = false;
+                    } else {
+
+                    }
+                });
+            },
+            delCate(id){
+                this.enterAlert = false;
+                axios({
+                    method:'delete',
+                    url:'http://www.blog.com/api/category/delete',
+                    params:{
+                        id:id,
+                    },
+                    responseType:'json'
+                }).then(res => {
+                    this.notice = res.data.msg;
+                    this.msgAlert = true;
+                    this.getCateMes();
+                });
+            },
+            back(){
+                location. reload();
+                /*this.operation='show';
+                this.name = '';
+                this.attr = '';
+                this.attr1 = '';
+                this.attr2 = '';
+                this.attr3 = '';
+                this.attrList = false;*/
+            },
+            confirmAlert(notice,id){
+                this.notice = notice;
+                this.cate_id = id;
+                this.enterAlert = true;
+            },
+            switchPage(page){
+                this.page = page;
+                this.getCateMes();
+            },
+            changePage(ev){
+                let keynum = ev.keyCode;
+                let keychar = String.fromCharCode(keynum);
+                // console.log(keynum,keychar);
+                // 回车13
+                if (keynum === 13){
+                    this.page > this.catePages.pageCount ? this.page = this.catePages.pageCount : null ;
+                    this.page < 1 ? this.page = 1 : null ;
+                    this.getCateMes();
+                }
+            }
+        }
+    })
+</script>
+
+<!--jquery-1.12.4.min.js-->
+<script  src="assets/js/jquery.min.js"></script>
+
+<!--bootstrap.min.js-->
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!--jquery.slimscroll.min.js-->
+<script src="assets/js/jquery.slimscroll.min.js"></script>
+
+<!--feather.min.js-->
+<script src="assets/js/feather.min.js"></script>
+
+<!-- DataMaps Plugin Js -->
+<script src="assets/js/d3.min.js"></script>
+<script src="assets/js/topojson.js"></script>
+
+<!--fontawesome-all.min.js-->
+<script src="assets/js/fontawesome-all.min.js"></script>
+
+<script src="assets/js/custom.js"></script>
+
+</body>
+</html>
